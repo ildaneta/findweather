@@ -23,9 +23,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: "Overpass_300Light", fontSize: 20 }}>
-        Find Weather!
-      </Text>
+      <Text style={styles.text}>Find Weather!</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -37,5 +35,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  text: {
+    fontFamily: "Overpass_300Light",
+    fontSize: 20,
   },
 });
