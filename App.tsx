@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import * as Font from "expo-font";
+import { StyleSheet, Text, View } from "react-native";
+
 import {
   useFonts,
   Overpass_300Light,
