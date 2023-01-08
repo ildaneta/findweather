@@ -1,5 +1,4 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 
 import {
   useFonts,
@@ -8,6 +7,7 @@ import {
   Overpass_600SemiBold,
   Overpass_700Bold,
 } from "@expo-google-fonts/overpass";
+import Welcome from "./src/screens/Welcome";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,23 +22,10 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Find Weather!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar style="light" />
+
+      <Welcome />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  text: {
-    fontFamily: "Overpass_300Light",
-    fontSize: 20,
-  },
-});
