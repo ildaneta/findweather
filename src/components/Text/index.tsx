@@ -1,7 +1,7 @@
 import React from "react";
+import { TextProps } from "react-native";
 import Styled from "./styles";
-
-export interface IText {
+export interface IText extends TextProps {
   children: React.ReactNode;
   fontSize: number;
   fontFamily: string;
@@ -14,7 +14,8 @@ const Text = ({
   fontSize,
   fontFamily,
   color,
-  textAlign,
+  textAlign = "center",
+  ...rest
 }: IText): JSX.Element => {
   return (
     <Styled.Text
@@ -22,6 +23,7 @@ const Text = ({
       fontSize={fontSize}
       color={color}
       textAlign={textAlign}
+      {...rest}
     >
       {children}
     </Styled.Text>
