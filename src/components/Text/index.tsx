@@ -1,6 +1,7 @@
 import React from "react";
 import { TextProps } from "react-native";
 import Styled from "./styles";
+
 export interface IText extends TextProps {
   children: React.ReactNode;
   fontSize: number;
