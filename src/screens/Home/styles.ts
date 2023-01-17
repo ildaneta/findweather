@@ -1,0 +1,61 @@
+import { Platform, StatusBar } from 'react-native';
+import styled from 'styled-components/native';
+import theme from '../../theme';
+
+function getStatusBarHeight() {
+  return Platform.OS === "android" ? StatusBar.currentHeight : 0;
+}
+
+const Container = styled.SafeAreaView`
+  margin-top: ${getStatusBarHeight()}px;
+  `;
+
+const ScrollView = styled.ScrollView`
+  flex: 1;
+  background-color: ${theme.colors.dark};
+  padding: 0 16px;
+`;
+
+const LocationIconContainer = styled.View`
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start
+`;
+
+const LocationTextContainer = styled.View``;
+
+const LocationCityCountryContainer = styled.View`
+  flex-direction: row;
+`;
+
+const ImageContainer = styled.View`
+  align-items: center;
+`;
+
+const TodayAnd7NextDaysContainer = styled.View`
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+`;
+
+const Next7DaysContainer = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.6
+}))`
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+`;
+
+
+export default {
+  Container,
+  ScrollView,
+  LocationIconContainer,
+  LocationTextContainer,
+  LocationCityCountryContainer,
+  ImageContainer,
+  TodayAnd7NextDaysContainer,
+  Next7DaysContainer
+};

@@ -23,7 +23,7 @@ const Welcome = (): JSX.Element => {
   return (
     <Styled.Container>
       <SafeAreaView>
-        <Divider top={50} />
+        <Divider top={60} />
 
         <Styled.ContainerImage>
           <Image source={CloudAndThunderPNG} />
@@ -36,6 +36,7 @@ const Welcome = (): JSX.Element => {
           fontSize={theme.fontSize.xxl33}
           color={theme.colors.white}
           textAlign="center"
+          style={{ width: 300, alignSelf: "center" }}
         >
           Descubra o Clima na sua Cidade
         </Text>
