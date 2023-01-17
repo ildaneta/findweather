@@ -14,7 +14,7 @@ const Text = ({
   fontSize,
   fontFamily,
   color,
-  textAlign,
+  textAlign = "center",
 }: IText): JSX.Element => {
   return (
     <Styled.Text
