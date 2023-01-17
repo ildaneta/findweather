@@ -9,6 +9,16 @@ import CloudAndThunderPNG from "../../assets/cloud-and-thunder.png";
 
 import Styled from "./styles";
 
+const LetterBold = () => (
+  <Text
+    fontFamily={theme.fontFamily.OverpassBold}
+    fontSize={theme.fontSize.md22}
+    color={theme.colors.gray100}
+  >
+    Weather
+  </Text>
+);
+
 const Welcome = (): JSX.Element => {
   return (
     <Styled.Container>
@@ -36,10 +46,10 @@ const Welcome = (): JSX.Element => {
           fontFamily={theme.fontFamily.OverpassRegular}
           fontSize={theme.fontSize.md22}
           color={theme.colors.gray100}
-          textAlign="center"
         >
-          Com o findWeather nunca ficou tão fácil descobrir o clima de sua
-          cidade ou do mundo
+          Com o Find
+          <LetterBold /> nunca ficou tão fácil ter a previsão do tempo na palma
+          da sua mão
         </Text>
 
         <Divider top={30} />
