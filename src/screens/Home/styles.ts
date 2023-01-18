@@ -2,13 +2,16 @@ import { Platform, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
 import theme from '../../theme';
 
-function getStatusBarHeight() {
-  return Platform.OS === "android" ? StatusBar.currentHeight : 0;
-}
+const getStatusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
+
 
 const Container = styled.SafeAreaView`
-  margin-top: ${getStatusBarHeight()}px;
-  `;
+  margin-top: ${getStatusBarHeight}px;
+`;
+
+const ContainerEmptyState = styled.View`
+  align-items: center;
+`;
 
 const ScrollView = styled.ScrollView`
   flex: 1;
@@ -51,6 +54,7 @@ const Next7DaysContainer = styled.TouchableOpacity.attrs(() => ({
 
 export default {
   Container,
+  ContainerEmptyState,
   ScrollView,
   LocationIconContainer,
   LocationTextContainer,

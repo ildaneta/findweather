@@ -9,6 +9,13 @@ import CloudAndThunderPNG from "../../assets/cloud-and-thunder.png";
 
 import Styled from "./styles";
 
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { IStackRoutes } from "../../routes/stack.routes";
+type WelcomeScreenNavigationProp = NativeStackNavigationProp<
+  IStackRoutes,
+  "Welcome"
+>;
+
 const LetterBold = () => (
   <Text
     fontFamily={theme.fontFamily.OverpassBold}
@@ -19,7 +26,11 @@ const LetterBold = () => (
   </Text>
 );
 
-const Welcome = (): JSX.Element => {
+type Props = {
+  navigation: WelcomeScreenNavigationProp;
+};
+
+const Welcome = ({ navigation }: Props): JSX.Element => {
   return (
     <Styled.Container>
       <SafeAreaView>
@@ -35,7 +46,6 @@ const Welcome = (): JSX.Element => {
           fontFamily={theme.fontFamily.OverpassSemiBold}
           fontSize={theme.fontSize.xxl33}
           color={theme.colors.white}
-          textAlign="center"
           style={{ width: 300, alignSelf: "center" }}
         >
           Descubra o Clima na sua Cidade
@@ -47,6 +57,7 @@ const Welcome = (): JSX.Element => {
           fontFamily={theme.fontFamily.OverpassRegular}
           fontSize={theme.fontSize.md22}
           color={theme.colors.gray100}
+          textAlign="center"
         >
           Com o Find
           <LetterBold /> nunca ficou tão fácil ter a previsão do tempo na palma
@@ -60,7 +71,9 @@ const Welcome = (): JSX.Element => {
           borderColor={theme.colors.gray300}
           borderRadius={18}
           height={54}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
         >
           <Text
             fontFamily={theme.fontFamily.OverpassRegular}
