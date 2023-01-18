@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 
 import Text from "../../components/Text";
 import Divider from "../../components/Divider";
@@ -17,6 +17,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import DropMiniaturePNG from "../../assets/drop-miniature.png";
 import WindMiniaturePNG from "../../assets/wind-miniature.png";
 import RainingCloudPNG from "../../assets/raining-cloud-miniature.png";
+import ClimateChangePNG from "../../assets/climate-change.png";
 
 const dataWeatherDescription = [
   {
@@ -71,108 +72,154 @@ const dataCardHourTemperature = [
   },
 ];
 
-const Home = (): JSX.Element => {
+const EmptyStateContent = () => {
   return (
-    <Styled.ScrollView>
-      <Styled.Container>
-        <Divider top={27} />
+    <Styled.Container>
+      <Styled.ContainerEmptyState>
+        <Divider top={60} />
 
-        <Styled.LocationIconContainer>
-          <Ionicons
-            name="location-sharp"
-            size={22}
+        <Text
+          fontFamily={theme.fontFamily.OverpassRegular}
+          fontSize={theme.fontSize.xxl33}
+          color={theme.colors.white}
+        >
+          Find
+          <Text
+            fontFamily={theme.fontFamily.OverpassBold}
+            fontSize={theme.fontSize.xxl33}
             color={theme.colors.white}
-          />
+          >
+            Weather
+          </Text>
+        </Text>
 
-          <Styled.LocationTextContainer>
-            <Styled.LocationCityCountryContainer>
-              <Text
-                fontFamily={theme.fontFamily.OverpassRegular}
-                fontSize={theme.fontSize.sm18}
-                color={theme.colors.white}
-              >
-                {""} A Coruña, {""}
-              </Text>
+        <Divider top={100} />
 
-              <Text
-                fontFamily={theme.fontFamily.OverpassRegular}
-                fontSize={theme.fontSize.sm18}
-                color={theme.colors.white}
-              >
-                Espanha
-              </Text>
-            </Styled.LocationCityCountryContainer>
+        <Image source={ClimateChangePNG} />
 
-            <Divider top={3} />
+        <Divider top={100} />
+
+        <TouchableOpacity onPress={() => {}} activeOpacity={0.75}>
+          <Text
+            fontFamily={theme.fontFamily.OverpassRegular}
+            fontSize={theme.fontSize.md22}
+            color={theme.colors.gray100}
+            style={{ textDecorationLine: "underline" }}
+          >
+            Selecione aqui um local e {"\n"} encontre o clima em tempo real
+          </Text>
+        </TouchableOpacity>
+      </Styled.ContainerEmptyState>
+    </Styled.Container>
+  );
+};
+
+const FullContent = () => (
+  <>
+    <Styled.Container>
+      <Divider top={27} />
+
+      <Styled.LocationIconContainer>
+        <Ionicons name="location-sharp" size={22} color={theme.colors.white} />
+
+        <Styled.LocationTextContainer>
+          <Styled.LocationCityCountryContainer>
+            <Text
+              fontFamily={theme.fontFamily.OverpassRegular}
+              fontSize={theme.fontSize.sm18}
+              color={theme.colors.white}
+            >
+              {""} A Coruña, {""}
+            </Text>
 
             <Text
               fontFamily={theme.fontFamily.OverpassRegular}
-              fontSize={theme.fontSize.xs16}
-              color={theme.colors.gray100}
+              fontSize={theme.fontSize.sm18}
+              color={theme.colors.white}
             >
-              {""} Domingo, 01 Jan de 2023
+              Espanha
             </Text>
-          </Styled.LocationTextContainer>
-        </Styled.LocationIconContainer>
+          </Styled.LocationCityCountryContainer>
 
-        <Divider top={19} />
+          <Divider top={3} />
 
-        <Styled.ImageContainer>
-          <Image source={RainingPNG} />
-        </Styled.ImageContainer>
-
-        <Temperature
-          maxTemp={23}
-          minTemp={18}
-          maxTempFontSize={theme.fontSize.giant76}
-          minTempFontSize={theme.fontSize.xl40}
-        />
-
-        <Text
-          fontFamily={theme.fontFamily.OverpassRegular}
-          fontSize={theme.fontSize.md22}
-          color={theme.colors.gray100}
-        >
-          Chuva Moderada
-        </Text>
-      </Styled.Container>
-
-      <Divider top={30} />
-
-      <WeatherDescription data={dataWeatherDescription} />
-
-      <Divider top={30} />
-
-      <Styled.TodayAnd7NextDaysContainer>
-        <Text
-          fontFamily={theme.fontFamily.OverpassRegular}
-          fontSize={theme.fontSize.md20}
-          color={theme.colors.white}
-        >
-          Hoje
-        </Text>
-
-        <Styled.Next7DaysContainer>
           <Text
             fontFamily={theme.fontFamily.OverpassRegular}
             fontSize={theme.fontSize.xs16}
             color={theme.colors.gray100}
           >
-            Próximos 7 dias
+            {""} Domingo, 01 Jan de 2023
           </Text>
+        </Styled.LocationTextContainer>
+      </Styled.LocationIconContainer>
 
-          <SimpleLineIcons
-            name="arrow-right"
-            size={11}
-            color={theme.colors.gray100}
-            style={{ marginLeft: 4 }}
-          />
-        </Styled.Next7DaysContainer>
-      </Styled.TodayAnd7NextDaysContainer>
+      <Divider top={19} />
 
-      <Divider top={15} />
+      <Styled.ImageContainer>
+        <Image source={RainingPNG} />
+      </Styled.ImageContainer>
 
-      <CardHourTemperature data={dataCardHourTemperature} />
+      <Temperature
+        maxTemp={23}
+        minTemp={18}
+        maxTempFontSize={theme.fontSize.giant76}
+        minTempFontSize={theme.fontSize.xl40}
+      />
+
+      <Text
+        fontFamily={theme.fontFamily.OverpassRegular}
+        fontSize={theme.fontSize.md22}
+        color={theme.colors.gray100}
+      >
+        Chuva Moderada
+      </Text>
+    </Styled.Container>
+
+    <Divider top={30} />
+
+    <WeatherDescription data={dataWeatherDescription} />
+
+    <Divider top={30} />
+
+    <Styled.TodayAnd7NextDaysContainer>
+      <Text
+        fontFamily={theme.fontFamily.OverpassRegular}
+        fontSize={theme.fontSize.md20}
+        color={theme.colors.white}
+      >
+        Hoje
+      </Text>
+
+      <Styled.Next7DaysContainer>
+        <Text
+          fontFamily={theme.fontFamily.OverpassRegular}
+          fontSize={theme.fontSize.xs16}
+          color={theme.colors.gray100}
+        >
+          Próximos 7 dias
+        </Text>
+
+        <SimpleLineIcons
+          name="arrow-right"
+          size={11}
+          color={theme.colors.gray100}
+          style={{ marginLeft: 4 }}
+        />
+      </Styled.Next7DaysContainer>
+    </Styled.TodayAnd7NextDaysContainer>
+
+    <Divider top={15} />
+
+    <CardHourTemperature data={dataCardHourTemperature} />
+
+    <Divider bottom={15} />
+  </>
+);
+
+const Home = (): JSX.Element => {
+  return (
+    <Styled.ScrollView>
+      <EmptyStateContent />
     </Styled.ScrollView>
   );
 };
