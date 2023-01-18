@@ -46,7 +46,7 @@ const CardHourTemperature = ({
 
           <Image source={item.icon} />
 
-          <Divider top={8} />
+          <Divider top={10} />
 
           <Text
             fontFamily={theme.fontFamily.OverpassBold}
