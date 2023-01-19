@@ -11,10 +11,15 @@ import Styled from "./styles";
 
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
+
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
   "Welcome"
 >;
+
+type Props = {
+  navigation: WelcomeScreenNavigationProp;
+};
 
 const LetterBold = () => (
   <Text
@@ -25,10 +30,6 @@ const LetterBold = () => (
     Weather
   </Text>
 );
-
-type Props = {
-  navigation: WelcomeScreenNavigationProp;
-};
 
 const Welcome = ({ navigation }: Props): JSX.Element => {
   return (
