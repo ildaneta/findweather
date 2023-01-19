@@ -16,6 +16,7 @@
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "axios": "^1.2.3",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "expo": "~47.0.12",
     "expo-font": "~11.0.1",
     "expo-status-bar": "~1.4.2",
