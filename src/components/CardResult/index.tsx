@@ -1,4 +1,5 @@
 import React from "react";
+import { TouchableOpacityProps } from "react-native";
 import theme from "../../theme";
 import Divider from "../Divider";
 import Text from "../Text";
@@ -20,15 +21,15 @@ export interface ICardResult {
   };
 }
 
-interface ICardResultData {
+interface ICardResultData extends TouchableOpacityProps {
   data: ICardResult;
 }
 
-const CardResult = ({ data }: ICardResultData): JSX.Element => {
+const CardResult = ({ data, ...rest }: ICardResultData): JSX.Element => {
   const { location, current, condition } = data;
 
   return (
-    <Styled.ContainerButton>
+    <Styled.ContainerButton {...rest}>
       <Styled.ContainerTemperatureImage>
         <Styled.ContainerTemperature>
           <Text
