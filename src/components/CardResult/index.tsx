@@ -1,11 +1,12 @@
 import React from "react";
+import { TouchableOpacityProps } from "react-native";
 import theme from "../../theme";
 import Divider from "../Divider";
 import Text from "../Text";
 
 import Styled from "./styles";
 
-interface ICardResult {
+export interface ICardResult {
   location: {
     name: string;
     region: string;
@@ -20,15 +21,15 @@ interface ICardResult {
   };
 }
 
-interface ICardResultData {
+interface ICardResultData extends TouchableOpacityProps {
   data: ICardResult;
 }
 
-const CardResult = ({ data }: ICardResultData): JSX.Element => {
+const CardResult = ({ data, ...rest }: ICardResultData): JSX.Element => {
   const { location, current, condition } = data;
 
   return (
-    <Styled.ContainerButton>
+    <Styled.ContainerButton {...rest}>
       <Styled.ContainerTemperatureImage>
         <Styled.ContainerTemperature>
           <Text
@@ -37,7 +38,7 @@ const CardResult = ({ data }: ICardResultData): JSX.Element => {
             color={theme.colors.white}
             textAlign="left"
           >
-            {current.temp_c}
+            {current && Math.floor(current.temp_c)}
           </Text>
           <Text
             fontFamily={theme.fontFamily.OverpassBold}
@@ -73,7 +74,8 @@ const CardResult = ({ data }: ICardResultData): JSX.Element => {
         color={theme.colors.white}
         textAlign="left"
       >
-        {location.name}, {location.region}, {location.country}
+        {location.name}, {location.region && location.region + ","}{" "}
+        {location.country}
       </Text>
     </Styled.ContainerButton>
   );

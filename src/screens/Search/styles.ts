@@ -23,7 +23,7 @@ const ContainerInputButton = styled.View`
 const ContainerInput = styled.View`
   flex-direction: row;
   background-color: ${theme.colors.dark400};
-  padding: 15px 11px;
+  padding: 15px 8px;
   border-radius: 11px;
   width: 80%;
 `;
@@ -32,15 +32,15 @@ const Input = styled.TextInput`
   font-family: ${theme.fontFamily.OverpassRegular};
   color: ${theme.colors.white};
   font-size: ${theme.fontSize.xs16}px;
-  margin: 0 16px;
-  padding-right: 12px;
+  margin: 0 8px 0 8px;
+  width: 80%
 `;
 
 const SearchButton = styled.TouchableOpacity<TouchableOpacityProps>`
   background-color: ${theme.colors.dark400};
   padding: 13px 9px;
   border-radius: 11px;
-  width: 50px;
+  width: 55px;
   align-items: center;
 `;
 
