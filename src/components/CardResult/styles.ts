@@ -7,7 +7,7 @@ const ContainerButton = styled.TouchableOpacity.attrs(() => ({
 }))<TouchableOpacityProps>`
   background-color: ${theme.colors.dark300};
   padding: 15px 12px;
-  width: 50%;
+  width: 65%;
   border-radius: 20px;
   border-color: ${theme.colors.dark100};
   border-width: 1.5px
