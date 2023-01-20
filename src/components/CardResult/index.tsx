@@ -5,7 +5,7 @@ import Text from "../Text";
 
 import Styled from "./styles";
 
-interface ICardResult {
+export interface ICardResult {
   location: {
     name: string;
     region: string;
@@ -37,7 +37,7 @@ const CardResult = ({ data }: ICardResultData): JSX.Element => {
             color={theme.colors.white}
             textAlign="left"
           >
-            {current.temp_c}
+            {current && Math.floor(current.temp_c)}
           </Text>
           <Text
             fontFamily={theme.fontFamily.OverpassBold}
@@ -73,7 +73,8 @@ const CardResult = ({ data }: ICardResultData): JSX.Element => {
         color={theme.colors.white}
         textAlign="left"
       >
-        {location.name}, {location.region}, {location.country}
+        {location.name}, {location.region && location.region + ","}{" "}
+        {location.country}
       </Text>
     </Styled.ContainerButton>
   );
