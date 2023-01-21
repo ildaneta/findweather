@@ -21,6 +21,7 @@
     "expo": "~47.0.12",
     "expo-font": "~11.0.1",
     "expo-status-bar": "~1.4.2",
+    "intl": "^1.2.5",
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-safe-area-context": "4.4.1",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/intl": "^1.2.0",
     "@types/styled-components-react-native": "^5.2.0"
   },
   "private": true
