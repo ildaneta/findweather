@@ -13,15 +13,20 @@ export type IStackRoutes = {
 
 const { Navigator, Screen } = createNativeStackNavigator<IStackRoutes>();
 
-const StackRoutes = (): JSX.Element => {
+interface IStackParam {
+  initialRoute: keyof IStackRoutes;
+}
+
+const StackRoutes = ({ initialRoute }: IStackParam): JSX.Element => {
   return (
     <Navigator
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName={initialRoute}
     >
-      <Screen name="Welcome" component={Welcome} />
       <Screen name="Home" component={Home} />
+      <Screen name="Welcome" component={Welcome} />
       <Screen name="Search" component={Search} />
     </Navigator>
   );
