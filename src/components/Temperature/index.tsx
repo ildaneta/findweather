@@ -25,7 +25,7 @@ const Temperature = ({
           fontSize={maxTempFontSize}
           color={theme.colors.white}
         >
-          {maxTemp}
+          {Math.floor(maxTemp)}
         </Text>
         <Text
           fontFamily={theme.fontFamily.OverpassBold}
@@ -43,7 +43,7 @@ const Temperature = ({
           fontSize={minTempFontSize}
           color={theme.colors.gray100}
         >
-          {""} / {""} {minTemp}
+          {""} / {""} {Math.floor(minTemp)}
         </Text>
         <Text
           fontFamily={theme.fontFamily.OverpassSemiBold}
