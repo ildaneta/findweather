@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, SafeAreaView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../../components/Button";
 import Divider from "../../components/Divider";
 import Text from "../../components/Text";
@@ -11,6 +12,7 @@ import Styled from "./styles";
 
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
+import { USER_FIRST_TIME } from "../../storage/storage.config";
 
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -32,6 +34,12 @@ const LetterBold = () => (
 );
 
 const Welcome = ({ navigation }: Props): JSX.Element => {
+  const handleGoneThroughWelcome = async () => {
+    await AsyncStorage.setItem(USER_FIRST_TIME, "no").catch((error) => {
+      console.log("Error inserting USER_FIRST_TIME into storage: ", error);
+    });
+  };
+
   return (
     <Styled.Container>
       <SafeAreaView>
@@ -74,6 +82,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
           height={54}
           onPress={() => {
             navigation.navigate("Home");
+            handleGoneThroughWelcome();
           }}
         >
           <Text

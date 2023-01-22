@@ -1,14 +1,6 @@
 import styled from 'styled-components/native';
 import theme from '../../theme';
 
-const Container = styled.View`
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  
-`;
-
 const ContainerTemperature = styled.View`
   flex-direction: row;
   align-items: center;
@@ -22,8 +14,13 @@ const ContainerCard = styled.View`
   background-color: ${theme.colors.dark300};
 `;
 
+const Image = styled.Image`
+  height: 40px; 
+  width: 40px;
+`;
+
 export default {
-  Container,
   ContainerTemperature,
-  ContainerCard
+  ContainerCard,
+  Image
 };

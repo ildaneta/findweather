@@ -1,10 +1,16 @@
-import React from "react";
-import { Image, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  SectionList,
+  TouchableOpacity,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Text from "../../components/Text";
 import Divider from "../../components/Divider";
 import RainingPNG from "../../assets/raining.png";
-import Temperature from "../../components/Temperature";
 import WeatherDescription from "../../components/WeatherDescription";
 import CardHourTemperature from "../../components/CardHourTemperature";
 
@@ -20,65 +26,34 @@ import RainingCloudPNG from "../../assets/raining-cloud-miniature.png";
 import ClimateChangePNG from "../../assets/climate-change.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  ICurrent,
+  ILocation,
+  ISearchData,
+  IForecastData,
+} from "../../utils/search.interface";
+import { CITY_NAME } from "../../storage/storage.config";
+import { FindWeatherAPI } from "../../services/findweather-api";
+import { formatDate } from "../../utils/formatDate";
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<IStackRoutes, "Home">;
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
+  IStackRoutes,
+  "Home"
+>;
 
 type Props = {
   navigation: HomeScreenNavigationProp;
 };
 
-const dataWeatherDescription = [
-  {
-    id: 1,
-    icon: DropMiniaturePNG,
-    value: "24%",
-    text: "Umidade",
-  },
-
-  {
-    id: 2,
-    icon: WindMiniaturePNG,
-    value: "30km/h",
-    text: "Veloc. Vento",
-  },
-
-  {
-    id: 3,
-    icon: RainingCloudPNG,
-    value: "76%",
-    text: "Chuva",
-  },
-];
-
-const dataCardHourTemperature = [
-  {
-    id: 1,
-    icon: DropMiniaturePNG,
-    temperatureValue: 23,
-    hour: "09:00",
-  },
-
-  {
-    id: 2,
-    icon: WindMiniaturePNG,
-    temperatureValue: 18,
-    hour: "13:00",
-  },
-
-  {
-    id: 3,
-    icon: RainingCloudPNG,
-    temperatureValue: 8,
-    hour: "17:00",
-  },
-
-  {
-    id: 4,
-    icon: RainingCloudPNG,
-    temperatureValue: 8,
-    hour: "23:00",
-  },
-];
+interface IFullContentData {
+  location: ILocation;
+  current: ICurrent;
+  forecast: {
+    forecastday: Array<IForecastData>;
+  };
+  date: string;
+}
 
 const EmptyStateContent = ({ navigation }: Props) => {
   return (
@@ -125,113 +100,254 @@ const EmptyStateContent = ({ navigation }: Props) => {
   );
 };
 
-const FullContent = () => (
-  <>
-    <Styled.Container>
-      <Divider top={27} />
+const FullContent = ({
+  location,
+  current,
+  forecast,
+  date,
+}: IFullContentData) => {
+  const { humidity, wind_kph } = current;
+  const { daily_chance_of_rain } = forecast.forecastday[0].day;
 
-      <Styled.LocationIconContainer>
-        <Ionicons name="location-sharp" size={22} color={theme.colors.white} />
+  const dataWeatherDescription = [
+    {
+      id: 1,
+      icon: DropMiniaturePNG,
+      value: `${humidity}%`,
+      text: "Umidade",
+    },
 
-        <Styled.LocationTextContainer>
-          <Styled.LocationCityCountryContainer>
+    {
+      id: 2,
+      icon: WindMiniaturePNG,
+      value: `${Math.floor(wind_kph)}km/h`,
+      text: "Veloc. Vento",
+    },
+
+    {
+      id: 3,
+      icon: RainingCloudPNG,
+      value: `${Math.floor(daily_chance_of_rain)}%`,
+      text: "Chuva",
+    },
+  ];
+
+  return (
+    <>
+      <Styled.Container>
+        <Divider top={27} />
+
+        <Styled.LocationIconContainer>
+          <Ionicons
+            name="location-sharp"
+            size={22}
+            color={theme.colors.white}
+          />
+
+          <Styled.LocationTextContainer>
+            <Styled.LocationCityCountryContainer>
+              <Text
+                fontFamily={theme.fontFamily.OverpassRegular}
+                fontSize={theme.fontSize.sm18}
+                color={theme.colors.white}
+              >
+                {""} {location.name}, {""}
+              </Text>
+
+              <Text
+                fontFamily={theme.fontFamily.OverpassRegular}
+                fontSize={theme.fontSize.sm18}
+                color={theme.colors.white}
+              >
+                {location.country}
+              </Text>
+            </Styled.LocationCityCountryContainer>
+
+            <Divider top={3} />
+
             <Text
               fontFamily={theme.fontFamily.OverpassRegular}
-              fontSize={theme.fontSize.sm18}
-              color={theme.colors.white}
+              fontSize={theme.fontSize.xs16}
+              color={theme.colors.gray100}
             >
-              {""} A Coruña, {""}
+              {""} {date}
             </Text>
+          </Styled.LocationTextContainer>
+        </Styled.LocationIconContainer>
 
-            <Text
-              fontFamily={theme.fontFamily.OverpassRegular}
-              fontSize={theme.fontSize.sm18}
-              color={theme.colors.white}
-            >
-              Espanha
-            </Text>
-          </Styled.LocationCityCountryContainer>
+        <Divider top={19} />
 
-          <Divider top={3} />
+        <Styled.ImageContainer>
+          <Image source={RainingPNG} />
+        </Styled.ImageContainer>
 
+        <Divider top={10} />
+
+        <Styled.ContainerTemperature>
+          <Text
+            fontFamily={theme.fontFamily.OverpassBold}
+            fontSize={theme.fontSize.giant76}
+            color={theme.colors.white}
+          >
+            {Math.floor(current.temp_c)}
+          </Text>
+          <Text
+            fontFamily={theme.fontFamily.OverpassBold}
+            fontSize={theme.fontSize.lg30}
+            color={theme.colors.white}
+          >
+            º
+          </Text>
+        </Styled.ContainerTemperature>
+
+        <Text
+          fontFamily={theme.fontFamily.OverpassRegular}
+          fontSize={theme.fontSize.md22}
+          color={theme.colors.gray100}
+        >
+          {current.condition.text}
+        </Text>
+      </Styled.Container>
+
+      <Divider top={30} />
+
+      <WeatherDescription data={dataWeatherDescription} />
+
+      <Divider top={30} />
+
+      <Styled.TodayAnd7NextDaysContainer>
+        <Text
+          fontFamily={theme.fontFamily.OverpassRegular}
+          fontSize={theme.fontSize.md20}
+          color={theme.colors.white}
+        >
+          Hoje
+        </Text>
+
+        <Styled.Next7DaysContainer>
           <Text
             fontFamily={theme.fontFamily.OverpassRegular}
             fontSize={theme.fontSize.xs16}
             color={theme.colors.gray100}
           >
-            {""} Domingo, 01 Jan de 2023
+            Próximos 7 dias
           </Text>
-        </Styled.LocationTextContainer>
-      </Styled.LocationIconContainer>
 
-      <Divider top={19} />
+          <SimpleLineIcons
+            name="arrow-right"
+            size={11}
+            color={theme.colors.gray100}
+            style={{ marginLeft: 4 }}
+          />
+        </Styled.Next7DaysContainer>
+      </Styled.TodayAnd7NextDaysContainer>
 
-      <Styled.ImageContainer>
-        <Image source={RainingPNG} />
-      </Styled.ImageContainer>
+      <Divider top={15} />
 
-      <Temperature
-        maxTemp={23}
-        minTemp={18}
-        maxTempFontSize={theme.fontSize.giant76}
-        minTempFontSize={theme.fontSize.xl40}
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={forecast.forecastday[0].hour}
+        keyExtractor={(_, index) => String(index)}
+        ItemSeparatorComponent={() => <Styled.Separator />}
+        renderItem={({ item, index }) => {
+          const dataCardHourTemperature = [
+            {
+              id: index,
+              icon: item.condition.icon,
+              temperatureValue: Math.floor(item.temp_c),
+              hour: item.time.substring(11, 16),
+            },
+          ];
+          return (
+            <CardHourTemperature data={dataCardHourTemperature} key={index} />
+          );
+        }}
       />
 
-      <Text
-        fontFamily={theme.fontFamily.OverpassRegular}
-        fontSize={theme.fontSize.md22}
-        color={theme.colors.gray100}
-      >
-        Chuva Moderada
-      </Text>
-    </Styled.Container>
-
-    <Divider top={30} />
-
-    <WeatherDescription data={dataWeatherDescription} />
-
-    <Divider top={30} />
-
-    <Styled.TodayAnd7NextDaysContainer>
-      <Text
-        fontFamily={theme.fontFamily.OverpassRegular}
-        fontSize={theme.fontSize.md20}
-        color={theme.colors.white}
-      >
-        Hoje
-      </Text>
-
-      <Styled.Next7DaysContainer>
-        <Text
-          fontFamily={theme.fontFamily.OverpassRegular}
-          fontSize={theme.fontSize.xs16}
-          color={theme.colors.gray100}
-        >
-          Próximos 7 dias
-        </Text>
-
-        <SimpleLineIcons
-          name="arrow-right"
-          size={11}
-          color={theme.colors.gray100}
-          style={{ marginLeft: 4 }}
-        />
-      </Styled.Next7DaysContainer>
-    </Styled.TodayAnd7NextDaysContainer>
-
-    <Divider top={15} />
-
-    <CardHourTemperature data={dataCardHourTemperature} />
-
-    <Divider bottom={15} />
-  </>
-);
+      <Divider bottom={15} />
+    </>
+  );
+};
 
 const Home = ({ navigation }: Props): JSX.Element => {
+  const [city, setCity] = useState(null);
+  const [response, setResponse] = useState<ISearchData>(null);
+  const [currentDate, setCurrentDate] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getDate = () => {
+    setCurrentDate(formatDate());
+  };
+
+  const getCityName = useCallback(async () => {
+    const storedCity = await AsyncStorage.getItem(CITY_NAME);
+
+    setCity(storedCity);
+
+    setIsLoading(false);
+  }, []);
+
+  const getAPIData = async () => {
+    setIsLoading(true);
+
+    await FindWeatherAPI.getForecast(city)
+      .then((response) => {
+        const data = response.data;
+
+        setResponse(data);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log("Error calling API: ", error));
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getCityName();
+    }, [])
+  );
+
+  useEffect(() => {
+    if (city) {
+      getAPIData();
+      getDate();
+    } else {
+      setIsLoading(false);
+      setResponse(null);
+    }
+  }, [city]);
+
+  if (isLoading) {
+    return (
+      <Styled.ScrollView>
+        <ActivityIndicator size="small" color={theme.colors.white} />
+      </Styled.ScrollView>
+    );
+  }
+
   return (
-    <Styled.ScrollView>
-      <EmptyStateContent navigation={navigation} />
-    </Styled.ScrollView>
+    <SectionList
+      style={{ backgroundColor: theme.colors.dark, paddingHorizontal: 16 }}
+      sections={[
+        {
+          title: "",
+          data: [
+            response ? (
+              <FullContent
+                current={response.current}
+                location={response.location}
+                forecast={response.forecast}
+                date={currentDate}
+              />
+            ) : (
+              <EmptyStateContent navigation={navigation} />
+            ),
+          ],
+        },
+      ]}
+      renderItem={({ item }) => item}
+      keyExtractor={(_, index) => String(index)}
+    />
   );
 };
 

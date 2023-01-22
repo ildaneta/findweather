@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { ActivityIndicator, Image, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FindWeatherAPI } from "../../services/findweather-api";
+
 import { Ionicons } from "@expo/vector-icons";
 
 import Divider from "../../components/Divider";
@@ -7,14 +11,14 @@ import HeaderNavigation from "../../components/HeaderNavigation";
 import theme from "../../theme";
 import Styled from "./styles";
 import CardResult, { ICardResult } from "../../components/CardResult";
-import { FindWeatherAPI } from "../../services/findweather-api";
+import Text from "../../components/Text";
 
 import NotFoundDestinationPNG from "../../assets/not-found-destination.png";
-import { ActivityIndicator, Image, View } from "react-native";
-import Text from "../../components/Text";
 import { ISearchData } from "../../utils/search.interface";
+
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
+import { CITY_NAME } from "../../storage/storage.config";
 
 type SearchScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -61,12 +65,14 @@ const Search = ({ navigation }: Props): JSX.Element => {
 
   const handleCallAPI = async () => {
     FindWeatherAPI.getForecast(textTyped)
-      .then((res) => {
+      .then(async (res) => {
         setIsLoading(true);
         setTextTyped("");
         setResponse(res.data);
 
         const { location, current } = res.data;
+
+        await AsyncStorage.setItem(CITY_NAME, location.name);
 
         setDataCard({
           location: {
