@@ -1,5 +1,5 @@
 const USER_FIRST_TIME = '@findweather:welcome';
 
-const SEARCH_DATA = '@findweather:search_data'
+const CITY_NAME = '@findweather:city_name'
 
-export {USER_FIRST_TIME, SEARCH_DATA}
+export {USER_FIRST_TIME, CITY_NAME}
