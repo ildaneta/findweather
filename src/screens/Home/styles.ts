@@ -51,6 +51,15 @@ const Next7DaysContainer = styled.TouchableOpacity.attrs(() => ({
   height: 30px;
 `;
 
+const Separator = styled.View`
+  margin-right: 10px;
+`;
+
+const ContainerTemperature = styled.View`
+  flex-direction: row;
+  align-self: center;
+`;
+
 
 export default {
   Container,
@@ -61,5 +70,7 @@ export default {
   LocationCityCountryContainer,
   ImageContainer,
   TodayAnd7NextDaysContainer,
-  Next7DaysContainer
+  Next7DaysContainer,
+  Separator,
+  ContainerTemperature
 };
