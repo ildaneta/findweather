@@ -66,7 +66,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
           fontFamily={theme.fontFamily.OverpassRegular}
           fontSize={theme.fontSize.md22}
           color={theme.colors.gray100}
-          textAlign="center"
+          style={{ textAlign: "center" }}
         >
           Com o Find
           <LetterBold /> nunca ficou tão fácil ter a previsão do tempo na palma
@@ -89,7 +89,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
             fontFamily={theme.fontFamily.OverpassRegular}
             fontSize={theme.fontSize.md22}
             color={theme.colors.white}
-            textAlign="center"
+            style={{ textAlign: "center" }}
           >
             Iniciar
           </Text>
