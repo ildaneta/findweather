@@ -5,6 +5,7 @@ import theme from '../../theme';
 const Container = styled.View`
   flex-direction: row;
   align-items: center;
+  width: 100%;
 `;
 
 const BackButton = styled.TouchableOpacity.attrs(() => ({
