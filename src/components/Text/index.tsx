@@ -7,7 +7,6 @@ export interface IText extends TextProps {
   fontSize: number;
   fontFamily: string;
   color: string;
-  textAlign?: "center" | "right" | "left";
 }
 
 const Text = ({
@@ -15,7 +14,6 @@ const Text = ({
   fontSize,
   fontFamily,
   color,
-  textAlign = "center",
   ...rest
 }: IText): JSX.Element => {
   return (
@@ -23,7 +21,6 @@ const Text = ({
       fontFamily={fontFamily}
       fontSize={fontSize}
       color={color}
-      textAlign={textAlign}
       {...rest}
     >
       {children}

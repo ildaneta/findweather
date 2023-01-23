@@ -36,7 +36,7 @@ const CardResult = ({ data, ...rest }: ICardResultData): JSX.Element => {
             fontFamily={theme.fontFamily.OverpassBold}
             fontSize={theme.fontSize.lg30}
             color={theme.colors.white}
-            textAlign="left"
+            style={{ textAlign: "left" }}
           >
             {current && Math.floor(current.temp_c)}
           </Text>
@@ -44,7 +44,7 @@ const CardResult = ({ data, ...rest }: ICardResultData): JSX.Element => {
             fontFamily={theme.fontFamily.OverpassBold}
             fontSize={theme.fontSize.sm18}
             color={theme.colors.white}
-            textAlign="left"
+            style={{ textAlign: "left" }}
           >
             º
           </Text>
@@ -61,7 +61,7 @@ const CardResult = ({ data, ...rest }: ICardResultData): JSX.Element => {
         fontFamily={theme.fontFamily.OverpassRegular}
         fontSize={theme.fontSize.sm18}
         color={theme.colors.gray100}
-        textAlign="left"
+        style={{ textAlign: "left" }}
       >
         {condition.text}
       </Text>
@@ -72,7 +72,7 @@ const CardResult = ({ data, ...rest }: ICardResultData): JSX.Element => {
         fontFamily={theme.fontFamily.OverpassRegular}
         fontSize={theme.fontSize.sm18}
         color={theme.colors.white}
-        textAlign="left"
+        style={{ textAlign: "left" }}
       >
         {location.name}, {location.region && location.region + ","}{" "}
         {location.country}
