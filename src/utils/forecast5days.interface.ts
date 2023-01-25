@@ -18,6 +18,8 @@ export interface IForecastDay {
     humidity: number,
     temp_kf: number
   },
+  minTemp?: number;
+  maxTemp?: number;
   weather: [
   {
     id: number,
