@@ -32,10 +32,15 @@ const Image = styled.Image`
   height: 119px;
 `;
 
+const ContainerWeekTemperature = styled.View`
+  padding: 0 16px;
+`;
+
 export default {
   Container,
   ScrollView,
   PaddingHorizontal,
   ContainerSummaryTemperature,
-  Image
+  Image,
+  ContainerWeekTemperature
 };
