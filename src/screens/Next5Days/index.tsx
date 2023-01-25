@@ -178,23 +178,25 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
 
           <Divider bottom={35} />
 
-          {filteredDaysForecast.map((item, index) => {
-            const { description } = item.weather[0];
-            if (index === 0) {
-              return <React.Fragment key={index} />;
-            }
+          <Styled.ContainerWeekTemperature>
+            {filteredDaysForecast.map((item, index) => {
+              const { description } = item.weather[0];
+              if (index === 0) {
+                return <React.Fragment key={index} />;
+              }
 
-            return (
-              <WeekDayTemperature
-                key={index}
-                date={formatAPIDate(item.dt_txt)}
-                icon={item.weather[0].icon}
-                condition={firstLetterUpperCase(description)}
-                maxTemp={Math.floor(item.maxTemp)}
-                minTemp={Math.floor(item.minTemp)}
-              />
-            );
-          })}
+              return (
+                <WeekDayTemperature
+                  key={index}
+                  date={formatAPIDate(item.dt_txt)}
+                  icon={item.weather[0].icon}
+                  condition={firstLetterUpperCase(description)}
+                  maxTemp={Math.floor(item.maxTemp)}
+                  minTemp={Math.floor(item.minTemp)}
+                />
+              );
+            })}
+          </Styled.ContainerWeekTemperature>
 
           <Divider bottom={20} />
         </>
