@@ -55,7 +55,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
           fontFamily={theme.fontFamily.OverpassSemiBold}
           fontSize={theme.fontSize.xxl33}
           color={theme.colors.white}
-          style={{ width: 300, alignSelf: "center" }}
+          style={{ width: 300, textAlign: "center", alignSelf: "center" }}
         >
           Descubra o Clima na sua Cidade
         </Text>
