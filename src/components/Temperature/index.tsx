@@ -33,7 +33,9 @@ const Temperature = ({
           fontFamily={theme.fontFamily.OverpassBold}
           fontSize={roundSize ? roundSize : theme.fontSize.lg30}
           color={theme.colors.white}
-          style={{ paddingTop: roundSize && 0 }}
+          style={{
+            paddingTop: roundSize ? 0 : 8,
+          }}
         >
           º
         </Text>

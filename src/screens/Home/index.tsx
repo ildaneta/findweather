@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  Platform,
   SectionList,
   TouchableOpacity,
 } from "react-native";
@@ -22,7 +23,8 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 
 import DropMiniaturePNG from "../../assets/drop-miniature.png";
 import WindMiniaturePNG from "../../assets/wind-miniature.png";
-import RainingCloudPNG from "../../assets/raining-cloud-miniature.png";
+import RainingCloudMiniaturePNG from "../../assets/raining-cloud-miniature.png";
+
 import ClimateChangePNG from "../../assets/climate-change.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
@@ -33,9 +35,14 @@ import {
   ISearchData,
   IForecastData,
 } from "../../utils/search.interface";
+import {
+  IForecast5Days,
+  IForecastDay,
+} from "../../utils/forecast5days.interface";
 import { CITY_NAME } from "../../storage/storage.config";
 import { FindWeatherAPI } from "../../services/findweather-api";
 import { formatDate } from "../../utils/formatDate";
+import { FindWeatherOpenWeatherAPI } from "../../services/findweather-api-openweather";
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -53,6 +60,8 @@ interface IFullContentData {
     forecastday: Array<IForecastData>;
   };
   date: string;
+  navigation: HomeScreenNavigationProp;
+  forecast5Days: Array<IForecastDay>;
 }
 
 const EmptyStateContent = ({ navigation }: Props) => {
@@ -90,7 +99,7 @@ const EmptyStateContent = ({ navigation }: Props) => {
             fontFamily={theme.fontFamily.OverpassRegular}
             fontSize={theme.fontSize.md22}
             color={theme.colors.gray100}
-            style={{ textDecorationLine: "underline" }}
+            style={{ textDecorationLine: "underline", textAlign: "center" }}
           >
             Selecione aqui um local e {"\n"} encontre o clima em tempo real
           </Text>
@@ -104,10 +113,13 @@ const FullContent = ({
   location,
   current,
   forecast,
+  forecast5Days,
   date,
+  navigation,
 }: IFullContentData) => {
+  const iOS = Platform.OS === "ios";
   const { humidity, wind_kph } = current;
-  const { daily_chance_of_rain } = forecast.forecastday[0].day;
+  const { daily_will_it_rain } = forecast.forecastday[0].day;
 
   const dataWeatherDescription = [
     {
@@ -126,8 +138,8 @@ const FullContent = ({
 
     {
       id: 3,
-      icon: RainingCloudPNG,
-      value: `${Math.floor(daily_chance_of_rain)}%`,
+      icon: RainingCloudMiniaturePNG,
+      value: `${Math.floor(daily_will_it_rain)}%`,
       text: "Chuva",
     },
   ];
@@ -181,7 +193,7 @@ const FullContent = ({
           <Image source={RainingPNG} />
         </Styled.ImageContainer>
 
-        <Divider top={10} />
+        <Divider top={iOS ? 10 : -10} />
 
         <Styled.ContainerTemperature>
           <Text
@@ -195,15 +207,22 @@ const FullContent = ({
             fontFamily={theme.fontFamily.OverpassBold}
             fontSize={theme.fontSize.lg30}
             color={theme.colors.white}
+            style={{
+              alignSelf: "center",
+              height: 80,
+            }}
           >
             º
           </Text>
         </Styled.ContainerTemperature>
 
+        <Divider top={iOS ? 0 : -10} />
+
         <Text
           fontFamily={theme.fontFamily.OverpassRegular}
           fontSize={theme.fontSize.md22}
           color={theme.colors.gray100}
+          style={{ textAlign: "center" }}
         >
           {current.condition.text}
         </Text>
@@ -224,13 +243,20 @@ const FullContent = ({
           Hoje
         </Text>
 
-        <Styled.Next7DaysContainer>
+        <Styled.Next5DaysContainer
+          onPress={() =>
+            navigation.navigate("Next5Days", {
+              forecast: forecast,
+              forecast5Days: forecast5Days,
+            })
+          }
+        >
           <Text
             fontFamily={theme.fontFamily.OverpassRegular}
             fontSize={theme.fontSize.xs16}
             color={theme.colors.gray100}
           >
-            Próximos 7 dias
+            Próximos 5 dias
           </Text>
 
           <SimpleLineIcons
@@ -239,7 +265,7 @@ const FullContent = ({
             color={theme.colors.gray100}
             style={{ marginLeft: 4 }}
           />
-        </Styled.Next7DaysContainer>
+        </Styled.Next5DaysContainer>
       </Styled.TodayAnd7NextDaysContainer>
 
       <Divider top={15} />
@@ -275,6 +301,7 @@ const Home = ({ navigation }: Props): JSX.Element => {
   const [response, setResponse] = useState<ISearchData>(null);
   const [currentDate, setCurrentDate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [forecast5Days, setForecast5Days] = useState<IForecast5Days>(null);
 
   const getDate = () => {
     setCurrentDate(formatDate());
@@ -301,6 +328,20 @@ const Home = ({ navigation }: Props): JSX.Element => {
       .catch((error) => console.log("Error calling API: ", error));
   };
 
+  const getForecast5Days = async () => {
+    setIsLoading(true);
+
+    await FindWeatherOpenWeatherAPI.getForecast(city)
+      .then((res) => {
+        const data: IForecast5Days = res.data;
+
+        setForecast5Days(data);
+      })
+      .catch((error) =>
+        console.log("Error calling 5 next days forecast API: ", error)
+      );
+  };
+
   useFocusEffect(
     useCallback(() => {
       getCityName();
@@ -311,9 +352,11 @@ const Home = ({ navigation }: Props): JSX.Element => {
     if (city) {
       getAPIData();
       getDate();
+      getForecast5Days();
     } else {
       setIsLoading(false);
       setResponse(null);
+      setForecast5Days(null);
     }
   }, [city]);
 
@@ -338,6 +381,8 @@ const Home = ({ navigation }: Props): JSX.Element => {
                 location={response.location}
                 forecast={response.forecast}
                 date={currentDate}
+                forecast5Days={forecast5Days && forecast5Days.list}
+                navigation={navigation}
               />
             ) : (
               <EmptyStateContent navigation={navigation} />

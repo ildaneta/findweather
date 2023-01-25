@@ -43,7 +43,7 @@ const TodayAnd7NextDaysContainer = styled.View`
   flex-direction: row;
 `;
 
-const Next7DaysContainer = styled.TouchableOpacity.attrs(() => ({
+const Next5DaysContainer = styled.TouchableOpacity.attrs(() => ({
   activeOpacity: 0.6
 }))`
   flex-direction: row;
@@ -70,7 +70,7 @@ export default {
   LocationCityCountryContainer,
   ImageContainer,
   TodayAnd7NextDaysContainer,
-  Next7DaysContainer,
+  Next5DaysContainer,
   Separator,
   ContainerTemperature
 };
