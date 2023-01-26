@@ -40,7 +40,7 @@ const formatAPIDate = (date: string) => {
   l.toUpperCase()
   );
   
-  return `${upperCasedWeekday} ${upperCasedMonth}${iOS ? " ": ", "}${dayFormatted}`
+  return `${upperCasedWeekday} ${dayFormatted} ${upperCasedMonth}`
 };
 
 export {formatDate, formatAPIDate}
