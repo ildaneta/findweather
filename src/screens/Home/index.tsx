@@ -201,7 +201,7 @@ const FullContent = ({
             fontSize={theme.fontSize.giant76}
             color={theme.colors.white}
           >
-            {Math.floor(current.temp_c)}
+            {Math.round(current.temp_c)}
           </Text>
           <Text
             fontFamily={theme.fontFamily.OverpassBold}
@@ -281,7 +281,7 @@ const FullContent = ({
             {
               id: index,
               icon: item.condition.icon,
-              temperatureValue: Math.floor(item.temp_c),
+              temperatureValue: Math.round(item.temp_c),
               hour: item.time.substring(11, 16),
             },
           ];
