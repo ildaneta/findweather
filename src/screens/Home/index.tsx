@@ -11,7 +11,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Text from "../../components/Text";
 import Divider from "../../components/Divider";
-import RainingPNG from "../../assets/raining.png";
 import WeatherDescription from "../../components/WeatherDescription";
 import CardHourTemperature from "../../components/CardHourTemperature";
 
@@ -21,6 +20,7 @@ import Styled from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
+import RainingPNG from "../../assets/raining.png";
 import DropMiniaturePNG from "../../assets/drop-miniature.png";
 import WindMiniaturePNG from "../../assets/wind-miniature.png";
 import RainingCloudMiniaturePNG from "../../assets/raining-cloud-miniature.png";
@@ -190,7 +190,7 @@ const FullContent = ({
         <Divider top={19} />
 
         <Styled.ImageContainer>
-          <Image source={RainingPNG} />
+          <Styled.Image source={RainingPNG} />
         </Styled.ImageContainer>
 
         <Divider top={iOS ? 10 : -10} />
