@@ -33,7 +33,13 @@ const LocationCityCountryContainer = styled.View`
 `;
 
 const ImageContainer = styled.View`
-  align-items: center;
+  height: 170px;
+  align-self: center;
+`;
+
+const Image = styled.Image`
+  width: 170px;
+  height: 100%;
 `;
 
 const TodayAnd7NextDaysContainer = styled.View`
@@ -69,6 +75,7 @@ export default {
   LocationTextContainer,
   LocationCityCountryContainer,
   ImageContainer,
+  Image,
   TodayAnd7NextDaysContainer,
   Next5DaysContainer,
   Separator,
