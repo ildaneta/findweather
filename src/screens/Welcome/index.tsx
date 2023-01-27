@@ -42,15 +42,12 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
 
   return (
     <Styled.Container>
-      <SafeAreaView>
+      <Styled.ScrollView>
         <Divider top={60} />
-
         <Styled.ContainerImage>
-          <Image source={CloudAndThunderPNG} />
+          <Styled.Image source={CloudAndThunderPNG} />
         </Styled.ContainerImage>
-
         <Divider top={34} />
-
         <Text
           fontFamily={theme.fontFamily.OverpassSemiBold}
           fontSize={theme.fontSize.xxl33}
@@ -59,9 +56,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
         >
           Descubra o Clima na sua Cidade
         </Text>
-
         <Divider top={24} />
-
         <Text
           fontFamily={theme.fontFamily.OverpassRegular}
           fontSize={theme.fontSize.md22}
@@ -72,9 +67,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
           <LetterBold /> nunca ficou tão fácil ter a previsão do tempo na palma
           da sua mão
         </Text>
-
         <Divider top={30} />
-
         <Button
           backgroundColor={theme.colors.dark300}
           borderColor={theme.colors.gray300}
@@ -94,9 +87,8 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
             Iniciar
           </Text>
         </Button>
-
         <Divider bottom={10} />
-      </SafeAreaView>
+      </Styled.ScrollView>
     </Styled.Container>
   );
 };
