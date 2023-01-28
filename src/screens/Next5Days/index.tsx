@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, StatusBar, Platform } from "react-native";
+import { View, StatusBar, Platform, ActivityIndicator } from "react-native";
 import Divider from "../../components/Divider";
 import HeaderNavigation from "../../components/HeaderNavigation";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,6 +21,7 @@ import { IForecastData } from "../../utils/search.interface";
 import { formatAPIDate } from "../../utils/formatDate";
 import { IForecastDay } from "../../utils/forecast5days.interface";
 import { useFocusEffect } from "@react-navigation/native";
+import { forecastConditionsIcons } from "../../utils/forecastIcon";
 
 export type Next5DaysScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -47,29 +48,6 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
   >([]);
 
   const isAndroid = Platform.OS === "android";
-
-  const dataWeatherDescription = [
-    {
-      id: 1,
-      icon: DropMiniaturePNG,
-      value: `${forecast.forecastday[1].day.avghumidity}%`,
-      text: "Umidade",
-    },
-
-    {
-      id: 2,
-      icon: WindMiniaturePNG,
-      value: `${Math.floor(forecast.forecastday[1].day.maxwind_kph)}km/h`,
-      text: "Veloc. Vento",
-    },
-
-    {
-      id: 3,
-      icon: RainingCloudMiniaturePNG,
-      value: `${Math.floor(forecast.forecastday[1].day.daily_will_it_rain)}%`,
-      text: "Chuva",
-    },
-  ];
 
   const filterForecastDays = () => {
     let filteredList = [];
@@ -110,6 +88,36 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
     }, [])
   );
 
+  if (!filteredDaysForecast[0]) {
+    return <ActivityIndicator size="large" color={theme.colors.white} />;
+  }
+
+  const { weather, maxTemp, minTemp, main, wind } = filteredDaysForecast[1];
+  const { daily_will_it_rain } = forecast.forecastday[1].day;
+
+  const dataWeatherDescription = [
+    {
+      id: 1,
+      icon: DropMiniaturePNG,
+      value: `${main.humidity}%`,
+      text: "Umidade",
+    },
+
+    {
+      id: 2,
+      icon: WindMiniaturePNG,
+      value: `${Math.round(wind.speed)}km/h`,
+      text: "Veloc. Vento",
+    },
+
+    {
+      id: 3,
+      icon: RainingCloudMiniaturePNG,
+      value: `${Math.round(daily_will_it_rain)}%`,
+      text: "Chuva",
+    },
+  ];
+
   return (
     <>
       <StatusBar backgroundColor={theme.colors.dark400} />
@@ -134,7 +142,11 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
               <Divider top={30} />
 
               <Styled.ContainerSummaryTemperature>
-                <Styled.Image source={CloudAndThunderPNG} />
+                <Styled.Image
+                  source={forecastConditionsIcons(
+                    firstLetterUpperCase(weather[0].description)
+                  )}
+                />
 
                 <View>
                   <Text
@@ -149,8 +161,8 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
                   <Divider top={isAndroid ? -10 : 10} />
 
                   <Temperature
-                    maxTemp={forecast.forecastday[0].day.maxtemp_c}
-                    minTemp={forecast.forecastday[0].day.mintemp_c}
+                    maxTemp={Math.round(maxTemp)}
+                    minTemp={Math.round(minTemp)}
                     maxTempFontSize={theme.fontSize.giant76}
                     minTempFontSize={theme.fontSize.xxl33}
                   />
@@ -163,7 +175,7 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
                     color={theme.colors.gray100}
                     style={{ textAlign: "left", width: 180 }}
                   >
-                    {forecast.forecastday[1].day.condition.text}
+                    {firstLetterUpperCase(weather[0].description)}
                   </Text>
                 </View>
               </Styled.ContainerSummaryTemperature>
@@ -180,21 +192,22 @@ const Next5Days = ({ navigation, route: { params } }: Props): JSX.Element => {
 
           <Styled.ContainerWeekTemperature>
             {filteredDaysForecast.map((item, index) => {
-              const { description } = item.weather[0];
+              const { description, icon } = item.weather[0];
+
               if (index === 0) {
                 return <React.Fragment key={index} />;
+              } else {
+                return (
+                  <WeekDayTemperature
+                    key={index}
+                    date={formatAPIDate(item.dt_txt)}
+                    icon={icon}
+                    condition={firstLetterUpperCase(description)}
+                    maxTemp={Math.round(item.maxTemp)}
+                    minTemp={Math.round(item.minTemp)}
+                  />
+                );
               }
-
-              return (
-                <WeekDayTemperature
-                  key={index}
-                  date={formatAPIDate(item.dt_txt)}
-                  icon={item.weather[0].icon}
-                  condition={firstLetterUpperCase(description)}
-                  maxTemp={Math.floor(item.maxTemp)}
-                  minTemp={Math.floor(item.minTemp)}
-                />
-              );
             })}
           </Styled.ContainerWeekTemperature>
 
