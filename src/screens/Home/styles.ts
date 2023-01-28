@@ -42,7 +42,7 @@ const Image = styled.Image`
   height: 100%;
 `;
 
-const TodayAnd7NextDaysContainer = styled.View`
+const TodayAnd5NextDaysContainer = styled.View`
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -76,7 +76,7 @@ export default {
   LocationCityCountryContainer,
   ImageContainer,
   Image,
-  TodayAnd7NextDaysContainer,
+  TodayAnd5NextDaysContainer,
   Next5DaysContainer,
   Separator,
   ContainerTemperature
