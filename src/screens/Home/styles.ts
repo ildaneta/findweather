@@ -11,6 +11,9 @@ const Container = styled.SafeAreaView`
 
 const ContainerEmptyState = styled.View`
   align-items: center;
+  background-color: ${theme.colors.dark};
+  justify-content: space-between;
+  height: 100%;
 `;
 
 const ScrollView = styled.ScrollView`
