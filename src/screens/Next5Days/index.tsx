@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, StatusBar, Platform, ActivityIndicator } from "react-native";
 import Divider from "../../components/Divider";
 import HeaderNavigation from "../../components/HeaderNavigation";
