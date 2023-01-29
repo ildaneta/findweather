@@ -39,11 +39,11 @@ const CardHourTemperature = ({
             </Text>
           </Styled.ContainerTemperature>
 
-          <Divider top={8} />
+          <Divider top={5} />
 
           <Styled.Image source={{ uri: `https:${item.icon}` }} />
 
-          <Divider top={10} />
+          <Divider top={5} />
 
           <Text
             fontFamily={theme.fontFamily.OverpassBold}
