@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Image, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FindWeatherAPI } from "../../services/findweather-api";
@@ -19,6 +19,7 @@ import { ISearchData } from "../../utils/search.interface";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
 import { CITY_NAME } from "../../storage/storage.config";
+import { useFocusEffect } from "@react-navigation/native";
 
 type SearchScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -102,6 +103,12 @@ const Search = ({ navigation }: Props): JSX.Element => {
   const handleNavigateHome = () => {
     navigation.navigate("Home");
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      setResponse(null);
+    }, [])
+  );
 
   return (
     <>
