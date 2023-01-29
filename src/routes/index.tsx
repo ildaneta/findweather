@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import StackRoutes from "./stack.routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_FIRST_TIME } from "../storage/storage.config";
 import { ActivityIndicator } from "react-native";
 
 const Routes = (): JSX.Element => {
-  const [isUserFirstTime, setIsUserFirtTime] = useState("");
+  const [isNotUserFirstTime, setIsNotUserFirtTime] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -15,7 +14,7 @@ const Routes = (): JSX.Element => {
 
       await AsyncStorage.getItem(USER_FIRST_TIME)
         .then((res) => {
-          setIsUserFirtTime(res);
+          setIsNotUserFirtTime(res);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -32,9 +31,7 @@ const Routes = (): JSX.Element => {
   }
 
   return (
-    <NavigationContainer>
-      <StackRoutes initialRoute={isUserFirstTime ? "Home" : "Welcome"} />
-    </NavigationContainer>
+    <StackRoutes initialRoute={isNotUserFirstTime ? "TabRoutes" : "Welcome"} />
   );
 };
 

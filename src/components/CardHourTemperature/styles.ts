@@ -10,7 +10,7 @@ const ContainerCard = styled.View`
   align-items: center;
   border: 1.5px ${theme.colors.dark100} solid;
   border-radius: 20px;
-  padding: 8px 18px;
+  padding: 5px 14px;
   background-color: ${theme.colors.dark300};
 `;
 

@@ -20,7 +20,6 @@ import Styled from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
-import RainingPNG from "../../assets/raining.png";
 import DropMiniaturePNG from "../../assets/drop-miniature.png";
 import WindMiniaturePNG from "../../assets/wind-miniature.png";
 import RainingCloudMiniaturePNG from "../../assets/raining-cloud-miniature.png";
@@ -39,10 +38,11 @@ import {
   IForecast5Days,
   IForecastDay,
 } from "../../utils/forecast5days.interface";
-import { CITY_NAME } from "../../storage/storage.config";
+import { CITY_NAME, COUNTRY_CODE } from "../../storage/storage.config";
 import { FindWeatherAPI } from "../../services/findweather-api";
 import { formatDate } from "../../utils/formatDate";
 import { FindWeatherOpenWeatherAPI } from "../../services/findweather-api-openweather";
+import { forecastConditionsIcons } from "../../utils/forecastIcon";
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -190,7 +190,9 @@ const FullContent = ({
         <Divider top={19} />
 
         <Styled.ImageContainer>
-          <Styled.Image source={RainingPNG} />
+          <Styled.Image
+            source={forecastConditionsIcons(current.condition.text)}
+          />
         </Styled.ImageContainer>
 
         <Divider top={iOS ? 10 : -10} />
@@ -234,7 +236,7 @@ const FullContent = ({
 
       <Divider top={30} />
 
-      <Styled.TodayAnd7NextDaysContainer>
+      <Styled.TodayAnd5NextDaysContainer>
         <Text
           fontFamily={theme.fontFamily.OverpassRegular}
           fontSize={theme.fontSize.md20}
@@ -266,7 +268,7 @@ const FullContent = ({
             style={{ marginLeft: 4 }}
           />
         </Styled.Next5DaysContainer>
-      </Styled.TodayAnd7NextDaysContainer>
+      </Styled.TodayAnd5NextDaysContainer>
 
       <Divider top={15} />
 
@@ -298,6 +300,7 @@ const FullContent = ({
 
 const Home = ({ navigation }: Props): JSX.Element => {
   const [city, setCity] = useState(null);
+  const [countryCode, setCountryCode] = useState(null);
   const [response, setResponse] = useState<ISearchData>(null);
   const [currentDate, setCurrentDate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -309,6 +312,9 @@ const Home = ({ navigation }: Props): JSX.Element => {
 
   const getCityName = useCallback(async () => {
     const storedCity = await AsyncStorage.getItem(CITY_NAME);
+    const storedCountryCode = await AsyncStorage.getItem(COUNTRY_CODE);
+
+    setCountryCode(storedCountryCode);
 
     setCity(storedCity);
 
@@ -331,7 +337,7 @@ const Home = ({ navigation }: Props): JSX.Element => {
   const getForecast5Days = async () => {
     setIsLoading(true);
 
-    await FindWeatherOpenWeatherAPI.getForecast(city)
+    await FindWeatherOpenWeatherAPI.getForecast(city, countryCode)
       .then((res) => {
         const data: IForecast5Days = res.data;
 
