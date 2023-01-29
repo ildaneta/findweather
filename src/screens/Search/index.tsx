@@ -18,7 +18,7 @@ import { ISearchData } from "../../utils/search.interface";
 
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
-import { CITY_NAME } from "../../storage/storage.config";
+import { CITY_NAME, COUNTRY_CODE } from "../../storage/storage.config";
 import { useFocusEffect } from "@react-navigation/native";
 
 type SearchScreenNavigationProp = NativeStackNavigationProp<
@@ -57,6 +57,8 @@ const ErrorContent = () => (
 );
 
 const Search = ({ navigation }: Props): JSX.Element => {
+  const { API_KEY_OPENCAGEDATA } = process.env;
+
   const [isError, setIsError] = useState(false);
   const [textTyped, setTextTyped] = useState("");
   const [response, setResponse] = useState<ISearchData>(null);
@@ -74,6 +76,21 @@ const Search = ({ navigation }: Props): JSX.Element => {
         const { location, current } = res.data;
 
         await AsyncStorage.setItem(CITY_NAME, location.name);
+
+        fetch(
+          `https://api.opencagedata.com/geocode/v1/json?key=${API_KEY_OPENCAGEDATA}&q=${location.country}`
+        )
+          .then((response) => response.json())
+          .then(
+            async (data) =>
+              await AsyncStorage.setItem(
+                COUNTRY_CODE,
+                data.results[0].components.country_code
+              )
+          )
+          .catch((error) =>
+            console.log("Error calling open cage data API: ", error)
+          );
 
         setDataCard({
           location: {
