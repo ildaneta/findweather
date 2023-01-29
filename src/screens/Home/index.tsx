@@ -66,46 +66,42 @@ interface IFullContentData {
 
 const EmptyStateContent = ({ navigation }: Props) => {
   return (
-    <Styled.Container>
-      <Styled.ContainerEmptyState>
-        <Divider top={60} />
+    <Styled.ContainerEmptyState>
+      <Divider top={30} />
 
+      <Text
+        fontFamily={theme.fontFamily.OverpassRegular}
+        fontSize={theme.fontSize.xxl33}
+        color={theme.colors.white}
+      >
+        Find
         <Text
-          fontFamily={theme.fontFamily.OverpassRegular}
+          fontFamily={theme.fontFamily.OverpassBold}
           fontSize={theme.fontSize.xxl33}
           color={theme.colors.white}
         >
-          Find
-          <Text
-            fontFamily={theme.fontFamily.OverpassBold}
-            fontSize={theme.fontSize.xxl33}
-            color={theme.colors.white}
-          >
-            Weather
-          </Text>
+          Weather
         </Text>
+      </Text>
 
-        <Divider top={100} />
+      <Image source={ClimateChangePNG} />
 
-        <Image source={ClimateChangePNG} />
-
-        <Divider top={100} />
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Search")}
-          activeOpacity={0.75}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Search")}
+        activeOpacity={0.75}
+      >
+        <Text
+          fontFamily={theme.fontFamily.OverpassRegular}
+          fontSize={theme.fontSize.md22}
+          color={theme.colors.gray100}
+          style={{ textDecorationLine: "underline", textAlign: "center" }}
         >
-          <Text
-            fontFamily={theme.fontFamily.OverpassRegular}
-            fontSize={theme.fontSize.md22}
-            color={theme.colors.gray100}
-            style={{ textDecorationLine: "underline", textAlign: "center" }}
-          >
-            Selecione aqui um local e {"\n"} encontre o clima em tempo real
-          </Text>
-        </TouchableOpacity>
-      </Styled.ContainerEmptyState>
-    </Styled.Container>
+          Selecione aqui um local e {"\n"} encontre o clima em tempo real
+        </Text>
+      </TouchableOpacity>
+
+      <Divider top={30} />
+    </Styled.ContainerEmptyState>
   );
 };
 
@@ -375,30 +371,32 @@ const Home = ({ navigation }: Props): JSX.Element => {
   }
 
   return (
-    <SectionList
-      style={{ backgroundColor: theme.colors.dark, paddingHorizontal: 16 }}
-      sections={[
-        {
-          title: "",
-          data: [
-            response ? (
-              <FullContent
-                current={response.current}
-                location={response.location}
-                forecast={response.forecast}
-                date={currentDate}
-                forecast5Days={forecast5Days && forecast5Days.list}
-                navigation={navigation}
-              />
-            ) : (
-              <EmptyStateContent navigation={navigation} />
-            ),
-          ],
-        },
-      ]}
-      renderItem={({ item }) => item}
-      keyExtractor={(_, index) => String(index)}
-    />
+    <>
+      {response ? (
+        <SectionList
+          style={{ backgroundColor: theme.colors.dark, paddingHorizontal: 16 }}
+          sections={[
+            {
+              title: "",
+              data: [
+                <FullContent
+                  current={response.current}
+                  location={response.location}
+                  forecast={response.forecast}
+                  date={currentDate}
+                  forecast5Days={forecast5Days && forecast5Days.list}
+                  navigation={navigation}
+                />,
+              ],
+            },
+          ]}
+          renderItem={({ item }) => item}
+          keyExtractor={(_, index) => String(index)}
+        />
+      ) : (
+        <EmptyStateContent navigation={navigation} />
+      )}
+    </>
   );
 };
 
