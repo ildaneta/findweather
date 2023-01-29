@@ -7,9 +7,11 @@ import Search from "../screens/Search";
 import Next5Days from "../screens/Next5Days";
 import { IForecastData } from "../utils/search.interface";
 import { IForecastDay } from "../utils/forecast5days.interface";
+import TabRoutes from "./tab.routes";
 
 export type IStackRoutes = {
   Welcome: undefined;
+  TabRoutes: undefined;
   Home: undefined;
   Search: undefined;
   Next5Days: {
@@ -34,6 +36,7 @@ const StackRoutes = ({ initialRoute }: IStackParam): JSX.Element => {
       }}
       initialRouteName={initialRoute}
     >
+      <Screen name="TabRoutes" component={TabRoutes} />
       <Screen name="Home" component={Home} />
       <Screen name="Welcome" component={Welcome} />
       <Screen name="Search" component={Search} />
