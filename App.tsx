@@ -12,6 +12,7 @@ import Routes from "./src/routes";
 
 import "intl";
 import "intl/locale-data/jsonp/pt-BR";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -29,7 +30,9 @@ export default function App() {
     <>
       <StatusBar style="light" backgroundColor={theme.colors.dark} />
 
-      <Routes />
+      <NavigationContainer>
+        <Routes />
+      </NavigationContainer>
     </>
   );
 }
