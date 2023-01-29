@@ -3,12 +3,8 @@ import theme from '../../theme';
 
 const Container = styled.SafeAreaView`
   background-color: ${theme.colors.dark};
-  padding: 0 16px;
-  flex: 1
-`;
-
-const ScrollView = styled.ScrollView`
   flex: 1;
+  justify-content: center;
 `;
 
 const ContainerImage = styled.View`
@@ -20,9 +16,13 @@ const Image = styled.Image`
   height: 200px;
 `;
 
+const ContainerTextButton = styled.View`
+  padding: 0 16px;
+`;
+
 export default {
-  ScrollView,
   ContainerImage,
   Container,
-  Image
+  Image,
+  ContainerTextButton
 };
