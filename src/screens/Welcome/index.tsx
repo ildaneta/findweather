@@ -1,5 +1,4 @@
-import React from "react";
-import { Image, SafeAreaView } from "react-native";
+import React, { useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../../components/Button";
 import Divider from "../../components/Divider";
@@ -13,6 +12,7 @@ import Styled from "./styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IStackRoutes } from "../../routes/stack.routes";
 import { USER_FIRST_TIME } from "../../storage/storage.config";
+import { CommonActions } from "@react-navigation/native";
 
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -39,6 +39,19 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
       console.log("Error inserting USER_FIRST_TIME into storage: ", error);
     });
   };
+
+  const handleNavigation = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: "TabRoutes",
+          },
+        ],
+      })
+    );
+  }, []);
 
   return (
     <Styled.Container>
@@ -74,7 +87,7 @@ const Welcome = ({ navigation }: Props): JSX.Element => {
           borderRadius={18}
           height={54}
           onPress={() => {
-            navigation.navigate("Home");
+            handleNavigation();
             handleGoneThroughWelcome();
           }}
         >
