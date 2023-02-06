@@ -69,6 +69,12 @@ const ContainerTemperature = styled.View`
   align-self: center;
 `;
 
+const ContainerLoading = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${theme.colors.dark};
+`;
 
 export default {
   Container,
@@ -82,5 +88,6 @@ export default {
   TodayAnd5NextDaysContainer,
   Next5DaysContainer,
   Separator,
-  ContainerTemperature
+  ContainerTemperature,
+  ContainerLoading
 };
