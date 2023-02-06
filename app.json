@@ -18,7 +18,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.FindWeather"
+    },
+    "android": {
+      "package": "com.FindWeather"
     }
   }
 }
