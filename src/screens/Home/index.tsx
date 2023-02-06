@@ -307,6 +307,7 @@ const Home = ({ navigation }: Props): JSX.Element => {
   };
 
   const getCityName = useCallback(async () => {
+    setIsLoading(true);
     const storedCity = await AsyncStorage.getItem(CITY_NAME);
     const storedCountryCode = await AsyncStorage.getItem(COUNTRY_CODE);
 
@@ -327,7 +328,10 @@ const Home = ({ navigation }: Props): JSX.Element => {
         setResponse(data);
         setIsLoading(false);
       })
-      .catch((error) => console.log("Error calling API: ", error));
+      .catch((error) => {
+        console.log("Error calling API: ", error);
+        setIsLoading(false);
+      });
   };
 
   const getForecast5Days = async () => {
@@ -338,17 +342,24 @@ const Home = ({ navigation }: Props): JSX.Element => {
         const data: IForecast5Days = res.data;
 
         setForecast5Days(data);
+        setIsLoading(false);
       })
-      .catch((error) =>
-        console.log("Error calling 5 next days forecast API: ", error)
-      );
+      .catch((error) => {
+        console.log("Error calling 5 next days forecast API: ", error);
+        setIsLoading(false);
+      });
   };
 
   useFocusEffect(
     useCallback(() => {
+      setIsLoading(true);
       getCityName();
     }, [])
   );
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 5000);
 
   useEffect(() => {
     if (city) {
@@ -364,15 +375,17 @@ const Home = ({ navigation }: Props): JSX.Element => {
 
   if (isLoading) {
     return (
-      <Styled.ScrollView>
-        <ActivityIndicator size="small" color={theme.colors.white} />
-      </Styled.ScrollView>
+      <Styled.ContainerLoading>
+        <ActivityIndicator size="large" color={theme.colors.white} />
+      </Styled.ContainerLoading>
     );
+  } else if (!isLoading && !response) {
+    return <EmptyStateContent navigation={navigation} />;
   }
 
   return (
     <>
-      {response ? (
+      {response && (
         <SectionList
           style={{ backgroundColor: theme.colors.dark, paddingHorizontal: 16 }}
           sections={[
@@ -393,8 +406,6 @@ const Home = ({ navigation }: Props): JSX.Element => {
           renderItem={({ item }) => item}
           keyExtractor={(_, index) => String(index)}
         />
-      ) : (
-        <EmptyStateContent navigation={navigation} />
       )}
     </>
   );
