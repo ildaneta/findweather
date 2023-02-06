@@ -48,9 +48,8 @@ Além disso garanta que você tenha seu ambiente configurado com:
 - Yarn
 - NodeJS
 - Android Studio
-- Xcode é opcional
+- Xcode (caso você tenha um dispotivo macOS)
 - Expo CLI instalado
-
 
 Depois do clone rode:
 
@@ -63,7 +62,6 @@ npx expo start -c
 a -> para abrir no emulador Android
 i -> para abrir no emulador iOS
 ```
-
 
 ## :wrench: Tecnologias utilizadas
 
@@ -80,8 +78,8 @@ i -> para abrir no emulador iOS
 
 ## :woman_technologist: Dev
 
-Meu nome é Ilda Neta, e foi um prazer criar esse aplicativo, além de criar toda a interfacec.
-Para saber mais detalhes da minha carreira, acesse meu [LinkedIn](https://www.linkedin.com/in/ildaneta/) 🌸.
+Meu nome é Ilda Neta, e foi um prazer criar esse aplicativo e toda sua interface.
+Para saber mais detalhes sobre minha carreira acesse meu [LinkedIn](https://www.linkedin.com/in/ildaneta/) 🌸.
 
 Made with love :heartpulse: by Ilda Neta.
 
