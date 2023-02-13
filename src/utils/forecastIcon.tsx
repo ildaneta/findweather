@@ -29,6 +29,8 @@ import HailstoneMiddlePNG from "../assets/hailstone-middle.png";
 import HailstoneNightPNG from "../assets/hailstone-night.png";
 
 import CloudPNG from "../assets/cloud.png";
+import CloudDayPNG from "../assets/cloud-day.png";
+import CloudNightPNG from "../assets/cloud-night.png";
 
 import SunPNG from "../assets/sun.png";
 
@@ -89,9 +91,9 @@ import Squalls from "../assets/squalls.png";
 const currentHour = new Date().getHours();
 
 const isMiddle =
-  (currentHour >= 3 && currentHour < 6) ||
+  (currentHour >= 3 && currentHour < 5) ||
   (currentHour >= 16 && currentHour < 18);
-const isMorning = currentHour >= 6 && currentHour <= 15;
+const isMorning = currentHour >= 5 && currentHour <= 15;
 
 export const forecastConditionsIcons = (weatherCondition: string) => {
   switch (weatherCondition) {
@@ -193,7 +195,13 @@ export const forecastConditionsIcons = (weatherCondition: string) => {
     case "Nuvens dispersas":
     case "Céu pouco nublado":
     case "Parcialmente nublado":
-      return CloudPNG;
+      if (isMorning) {
+        return CloudDayPNG;
+      } else if (isMiddle) {
+        return CloudPNG;
+      } else {
+        return CloudNightPNG;
+      }
     case "Sol":
       return SunPNG;
     case "Céu limpo":
@@ -290,7 +298,7 @@ export const forecastConditionsIcons = (weatherCondition: string) => {
     case "Chuva e neve":
     case "Chuva forte de neve":
     case "Aguaceiros fracos com neve":
-    case "Chuva forte ou moderada com neve":
+    case "Chuva moderada ou forte com neve":
     case "Aguaceiros moderados ou fortes com neve":
       if (isMorning) {
         return SnowHeavyRainingPNG;
