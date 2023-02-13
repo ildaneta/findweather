@@ -6,6 +6,7 @@ import {
   Platform,
   SectionList,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -43,6 +44,7 @@ import { FindWeatherAPI } from "../../services/findweather-api";
 import { formatDate } from "../../utils/formatDate";
 import { FindWeatherOpenWeatherAPI } from "../../services/findweather-api-openweather";
 import { forecastConditionsIcons } from "../../utils/forecastIcon";
+import { colors } from "../../theme/colors";
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
   IStackRoutes,
@@ -301,6 +303,7 @@ const Home = ({ navigation }: Props): JSX.Element => {
   const [currentDate, setCurrentDate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [forecast5Days, setForecast5Days] = useState<IForecast5Days>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const getDate = () => {
     setCurrentDate(formatDate());
@@ -314,19 +317,14 @@ const Home = ({ navigation }: Props): JSX.Element => {
     setCountryCode(storedCountryCode);
 
     setCity(storedCity);
-
-    setIsLoading(false);
   }, []);
 
   const getAPIData = async () => {
-    setIsLoading(true);
-
     await FindWeatherAPI.getForecast(city)
       .then((response) => {
         const data = response.data;
 
         setResponse(data);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Error calling API: ", error);
@@ -342,7 +340,6 @@ const Home = ({ navigation }: Props): JSX.Element => {
         const data: IForecast5Days = res.data;
 
         setForecast5Days(data);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Error calling 5 next days forecast API: ", error);
@@ -352,26 +349,35 @@ const Home = ({ navigation }: Props): JSX.Element => {
 
   useFocusEffect(
     useCallback(() => {
-      setIsLoading(true);
       getCityName();
-    }, [])
+
+      if (city) {
+        getAPIData();
+        getDate();
+        getForecast5Days();
+      } else {
+        setResponse(null);
+        setForecast5Days(null);
+      }
+    }, [city])
   );
 
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 5000);
+  const getRefreshData = () => {
+    getCityName();
 
-  useEffect(() => {
     if (city) {
       getAPIData();
       getDate();
       getForecast5Days();
     } else {
-      setIsLoading(false);
       setResponse(null);
       setForecast5Days(null);
     }
-  }, [city]);
+  };
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 1000);
 
   if (isLoading) {
     return (
@@ -392,19 +398,34 @@ const Home = ({ navigation }: Props): JSX.Element => {
             {
               title: "",
               data: [
-                <FullContent
-                  current={response.current}
-                  location={response.location}
-                  forecast={response.forecast}
-                  date={currentDate}
-                  forecast5Days={forecast5Days && forecast5Days.list}
-                  navigation={navigation}
-                />,
+                {
+                  current: response.current,
+                  location: response.location,
+                  forecast: response.forecast,
+                  date: currentDate,
+                  forecast5Days: forecast5Days && forecast5Days.list,
+                },
               ],
             },
           ]}
-          renderItem={({ item }) => item}
+          renderItem={({ item }) => (
+            <FullContent
+              current={item.current}
+              location={item.location}
+              forecast={item.forecast}
+              date={item.date}
+              forecast5Days={item.forecast5Days}
+              navigation={navigation}
+            />
+          )}
           keyExtractor={(_, index) => String(index)}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={getRefreshData}
+              tintColor={colors.white}
+            />
+          }
         />
       )}
     </>
