@@ -124,6 +124,7 @@ const Search = ({ navigation }: Props): JSX.Element => {
   useFocusEffect(
     useCallback(() => {
       setResponse(null);
+      setIsError(null);
     }, [])
   );
 
