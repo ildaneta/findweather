@@ -20,7 +20,7 @@ Com o FindWeather você será capaz de buscar por uma cidade ou país para visua
 
 ## :desktop_computer: Como se inscrever no desafio?
 
-Para se inscrever no projeto é necessário acessar a página do [7 days of code](https://7daysofcode.io/#mobile) e escolher o desafio Mobile - React Native com Expo.
+Para se inscrever no projeto é necessário acessar a página do [7 days of code - Mobile](https://7daysofcode.io/matricula/react-native-expo) e se inscrever no desafio.
 
 A partir disso, durante 7 dias você receberá e-mails diários com os desafios criados por mim, e juntos(as) iremos criar esse projeto do zero até que ele esteja como nas fotos abaixo.
 
